@@ -106,30 +106,36 @@ function renderAll(){applyStrings();renderTicker();renderBeans(false);renderTabs
 // Horizontal-scroll cue: edge fade + nudging arrow + one-time peek, so users notice more categories
 var cues=[],REDUCED=matchMedia("(prefers-reduced-motion:reduce)").matches;
 function scrollCue(scroller,host){
- var btn=document.createElement("button");btn.type="button";btn.className="scroll-cue";btn.tabIndex=-1;
- btn.innerHTML='<svg aria-hidden="true"><use href="#i-chev"/></svg>';
- host.appendChild(btn);host.classList.add("cue-host");
- var seen=false,peeking=false;
+ function mk(cls){var b=document.createElement("button");b.type="button";b.className="scroll-cue "+cls;b.tabIndex=-1;
+  b.innerHTML='<svg aria-hidden="true"><use href="#i-chev"/></svg>';host.appendChild(b);return b}
+ var btn=mk("cue-fwd"),back=mk("cue-back");host.classList.add("cue-host");
  function dir(){return document.documentElement.dir==="rtl"?-1:1}
+ // distance from the start edge; abs() covers browsers that report negative scrollLeft in RTL
  function upd(){
-  var max=scroller.scrollWidth-scroller.clientWidth,x=Math.abs(scroller.scrollLeft);
+  var max=scroller.scrollWidth-scroller.clientWidth,x=Math.min(Math.abs(scroller.scrollLeft),max);
   host.classList.toggle("can-more",max>4&&x<max-4);host.classList.toggle("can-back",max>4&&x>4);
-  btn.setAttribute("aria-label",t("more"));
-  if(!peeking&&!seen&&x>24){seen=true;host.classList.add("cue-seen")}
+  btn.setAttribute("aria-label",t("more"));back.setAttribute("aria-label",t("more"));
  }
- scroller.addEventListener("scroll",upd,{passive:true});
+ var raf=0;function sched(){if(!raf)raf=requestAnimationFrame(function(){raf=0;upd()})}
+ scroller.addEventListener("scroll",sched,{passive:true});
+ scroller.addEventListener("touchmove",sched,{passive:true});
+ scroller.addEventListener("scrollend",upd);
  window.addEventListener("resize",upd);
- btn.addEventListener("click",function(){scroller.scrollBy({left:dir()*scroller.clientWidth*.7,behavior:REDUCED?"auto":"smooth"})});
+ window.addEventListener("orientationchange",upd);
+ if("ResizeObserver" in window)new ResizeObserver(upd).observe(scroller);
+ function go(d){scroller.scrollBy({left:d*dir()*scroller.clientWidth*.7,behavior:REDUCED?"auto":"smooth"})}
+ btn.addEventListener("click",function(){go(1)});
+ back.addEventListener("click",function(){go(-1)});
  if(!REDUCED&&"IntersectionObserver" in window){
   var io=new IntersectionObserver(function(en){
    if(!en[0].isIntersecting)return;io.disconnect();
-   if(seen||scroller.scrollWidth-scroller.clientWidth<=4)return;
-   setTimeout(function(){peeking=true;scroller.scrollBy({left:dir()*64,behavior:"smooth"});
-    setTimeout(function(){scroller.scrollBy({left:-dir()*64,behavior:"smooth"});setTimeout(function(){peeking=false},600)},650)},350);
+   if(Math.abs(scroller.scrollLeft)>4||scroller.scrollWidth-scroller.clientWidth<=4)return;
+   setTimeout(function(){scroller.scrollBy({left:dir()*64,behavior:"smooth"});
+    setTimeout(function(){scroller.scrollBy({left:-dir()*64,behavior:"smooth"});setTimeout(upd,600)},650)},350);
   },{threshold:.9});
   io.observe(scroller);
  }
- cues.push(upd);
+ cues.push(upd);upd();
 }
 scrollCue(document.getElementById("tabs"),document.getElementById("tabsBar"));
 scrollCue(document.getElementById("beanChips"),document.getElementById("chipsBar"));

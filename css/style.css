@@ -272,9 +272,12 @@ html[dir="rtl"] .cue-host::before{background:linear-gradient(to left,var(--fade-
 .scroll-cue{position:absolute;z-index:3;top:50%;inset-inline-end:8px;width:34px;height:34px;margin-top:-17px;border-radius:50%;border:0;padding:0;display:grid;place-items:center;background:var(--raya-deep);color:#fff;box-shadow:0 8px 18px -8px rgba(90,20,24,.8),0 0 0 3px rgba(251,244,232,.85);opacity:0;pointer-events:none;transform:scale(.6);transition:opacity .3s,transform .3s}
 .scroll-cue svg{width:18px;height:18px}
 html[dir="rtl"] .scroll-cue svg{transform:scaleX(-1)}
-.cue-host.can-more .scroll-cue{opacity:1;pointer-events:auto;transform:none;animation:cue-nudge 1.6s 1s ease-in-out infinite}
-html[dir="rtl"] .cue-host.can-more .scroll-cue{animation-name:cue-nudge-rtl}
-.cue-host.cue-seen .scroll-cue{animation:none;opacity:.0;pointer-events:none;transform:scale(.6)}
+.cue-host.can-more .scroll-cue.cue-fwd{opacity:1;pointer-events:auto;transform:none;animation:cue-nudge 1.6s 1s ease-in-out infinite}
+html[dir="rtl"] .cue-host.can-more .scroll-cue.cue-fwd{animation-name:cue-nudge-rtl}
+.scroll-cue.cue-back{inset-inline-end:auto;inset-inline-start:8px}
+.cue-host.can-back .scroll-cue.cue-back{opacity:1;pointer-events:auto;transform:none;animation:none}
+html[dir="ltr"] .scroll-cue.cue-back svg{transform:scaleX(-1)}
+html[dir="rtl"] .scroll-cue.cue-back svg{transform:none}
 @keyframes cue-nudge{0%,55%,100%{transform:translateX(0)}25%{transform:translateX(5px)}40%{transform:translateX(1px)}}
 @keyframes cue-nudge-rtl{0%,55%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}40%{transform:translateX(-1px)}}
 
