@@ -211,8 +211,8 @@ window.RAYA_MENU = {
     ]},
     // سوفت درينك
     { id: "soft", ar: "سوفت درينك", en: "Soft drinks", banner: "images/banners/soft.jpg", items: [
-      {"ar": "ماء صغيرة", "en": "Water, small", "p": 10, "dar": "زجاجة مياه معدنية صغيرة", "den": "A small bottle of mineral water", "img": "images/products/soft/water-small/image.jpg"},
-      {"ar": "ماء كبيرة", "en": "Water, large", "p": 18, "dar": "زجاجة مياه معدنية كبيرة", "den": "A large bottle of mineral water", "img": "images/products/soft/water-large/image.jpg"},
+      {"ar": "مياه صغيرة", "en": "Water, small", "p": 10, "dar": "زجاجة مياه معدنية صغيرة", "den": "A small bottle of mineral water", "img": "images/products/soft/water-small/image.jpg"},
+      {"ar": "مياه كبيرة", "en": "Water, large", "p": 18, "dar": "زجاجة مياه معدنية كبيرة", "den": "A large bottle of mineral water", "img": "images/products/soft/water-large/image.jpg"},
       {"ar": "كانز", "en": "Canned soda", "p": 35, "dar": "مشروب غازي", "den": "Soft drink", "img": "images/products/soft/canned-soda/image.jpg"},
       {"ar": "فيوري", "en": "Fury", "p": 40, "dar": "مشروب طاقة فيوري", "den": "Fury energy drink", "img": "images/products/soft/fury/image.jpg"},
       {"ar": "تويست", "en": "Twist", "p": 35, "dar": "مشروب طاقة تويست", "den": "Twist energy drink", "img": "images/products/soft/twist/image.jpg"},
